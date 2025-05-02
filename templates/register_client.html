@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register Client</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Register New Client Application</h1>
+        {% if client_id and client_secret %}
+            <div class="success-message">
+                <p>Client registered successfully!</p>
+                <p><strong>Client ID:</strong> <code>{{ client_id }}</code></p>
+                <p><strong>Client Secret:</strong> <code>{{ client_secret }}</code></p>
+                <p>Please save these credentials securely. They will not be shown again.</p>
+            </div>
+        {% else %}
+            <form action="/register-client" method="post">
+                <div class="form-group">
+                    <label for="app_name">Application Name:</label>
+                    <input type="text" id="app_name" name="app_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="redirect_uri">Redirect URI:</label>
+                    <input type="url" id="redirect_uri" name="redirect_uri" required>
+                </div>
+                <button type="submit">Register</button>
+            </form>
+        {% endif %}
+    </div>
+</body>
+</html>
