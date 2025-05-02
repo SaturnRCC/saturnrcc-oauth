@@ -49,7 +49,7 @@ async def authorize_get(
     redirect_uri: str,
     scope: str = None,
     state: str = None,
-    view: str = "login", # Add view parameter
+    view: str = "login",  # Add view parameter
     db: Session = Depends(get_db),
 ):
     # TODO: Validate client_id and redirect_uri against registered clients in the database
@@ -58,7 +58,7 @@ async def authorize_get(
     # Determine which template to render based on the 'view' parameter
     if view == "register":
         template_name = "register.html"
-    else: # Default to login
+    else:  # Default to login
         template_name = "login.html"
 
     return templates.TemplateResponse(
@@ -134,7 +134,7 @@ async def authorize_post(
         # Invalid action
         # TODO: Render form with error message
         return templates.TemplateResponse(
-            "authorize.html", # Fallback to authorize.html for invalid action
+            "authorize.html",  # Fallback to authorize.html for invalid action
             {
                 "request": request,
                 "client_id": client_id,
@@ -310,7 +310,6 @@ async def user_info(request: Request, db: Session = Depends(get_db)):
     if user_id is None:
         raise credentials_exception
 
-    # User ID is now a UUID (string), compare directly
     user = db.query(User).filter(User.id == user_id).first()
     if user is None:
         raise credentials_exception

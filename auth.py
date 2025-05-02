@@ -8,18 +8,24 @@ from passlib.context import CryptContext
 # --- Password Hashing ---
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
+
 
 def get_password_hash(password):
     return pwd_context.hash(password)
 
+
 # --- JWT Token Handling ---
 
 # Load JWT settings from environment variables
-SECRET_KEY = os.environ.get("SECRET_KEY", "your-super-secret-key") # Change this in production!
+SECRET_KEY = os.environ.get(
+    "SECRET_KEY", "your-super-secret-key"
+)  # Change this in production!
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30 # Access token expires in 30 minutes
+ACCESS_TOKEN_EXPIRE_MINUTES = 30  # Access token expires in 30 minutes
+
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
@@ -30,6 +36,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
+
 
 def verify_access_token(token: str, credentials_exception):
     try:
