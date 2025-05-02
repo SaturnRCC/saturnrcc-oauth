@@ -26,7 +26,7 @@ from auth import (
 )
 from auth import (
     ACCESS_TOKEN_EXPIRE_MINUTES,
-)  # Import ACCESS_TOKEN_EXPIRE_MINUTES from auth
+)
 
 # Create database tables (if they don't exist)
 Base.metadata.create_all(bind=engine)
@@ -49,14 +49,20 @@ async def authorize_get(
     redirect_uri: str,
     scope: str = None,
     state: str = None,
+    view: str = "login", # Add view parameter
     db: Session = Depends(get_db),
 ):
     # TODO: Validate client_id and redirect_uri against registered clients in the database
     # If invalid, return an error page
 
-    # Render the login/registration form
+    # Determine which template to render based on the 'view' parameter
+    if view == "register":
+        template_name = "register.html"
+    else: # Default to login
+        template_name = "login.html"
+
     return templates.TemplateResponse(
-        "authorize.html",
+        template_name,
         {
             "request": request,
             "client_id": client_id,
@@ -82,12 +88,15 @@ async def authorize_post(
 ):
     # TODO: Validate client_id and redirect_uri
 
+    # Determine which template to render in case of an error
+    error_template = "login.html" if action == "login" else "register.html"
+
     if action == "login":
         user = db.query(User).filter(User.email == email).first()
         if not user or not verify_password(password, user.hashed_password):
             # TODO: Render form with error message
             return templates.TemplateResponse(
-                "authorize.html",
+                error_template,
                 {
                     "request": request,
                     "client_id": client_id,
@@ -103,7 +112,7 @@ async def authorize_post(
         if existing_user:
             # TODO: Render form with error message
             return templates.TemplateResponse(
-                "authorize.html",
+                error_template,
                 {
                     "request": request,
                     "client_id": client_id,
@@ -125,7 +134,7 @@ async def authorize_post(
         # Invalid action
         # TODO: Render form with error message
         return templates.TemplateResponse(
-            "authorize.html",
+            "authorize.html", # Fallback to authorize.html for invalid action
             {
                 "request": request,
                 "client_id": client_id,
@@ -231,9 +240,9 @@ async def token(
             status_code=400, detail="Invalid or expired authorization code"
         )
 
-    oauth_client = db.query(OAuthClient).filter(
-        OAuthClient.id == auth_code.client_id
-    ).first()
+    oauth_client = (
+        db.query(OAuthClient).filter(OAuthClient.id == auth_code.client_id).first()
+    )
 
     # oauth_client = (
     #     db.query(OAuthClient)
@@ -250,7 +259,7 @@ async def token(
         raise HTTPException(
             status_code=400, detail="Invalid client credentials or redirect URI"
         )
-        
+
     if oauth_client.redirect_uri != redirect_uri:
         raise HTTPException(status_code=400, detail="Redirect URI mismatch")
 

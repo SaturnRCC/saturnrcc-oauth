@@ -1,24 +1,27 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     margin: 0;
     padding: 40px 20px;
-    background: linear-gradient(to right, #6a11cb, #2575fc); /* Gradient background */
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); /* More dynamic gradient */
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     color: #333;
+    line-height: 1.6;
 }
 
 .container {
     background-color: #ffffff;
     padding: 40px;
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25); /* Stronger shadow */
     width: 100%;
-    max-width: 600px;
+    max-width: 550px; /* Slightly adjusted max-width */
     text-align: center;
     animation: fadeIn 1s ease-in-out;
+    position: relative; /* Needed for potential future absolute positioning */
+    overflow: hidden; /* Ensures nothing spills out */
 }
 
 @keyframes fadeIn {
@@ -26,14 +29,30 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
-h1 {
+h1, h2, h3 {
     color: #333;
-    margin-bottom: 30px;
-    font-size: 2em;
+    margin-bottom: 25px; /* Adjusted margin */
+    font-weight: 600; /* Slightly bolder headings */
 }
 
-.form-group {
+h1 {
+    font-size: 2.2em; /* Larger main heading */
+}
+
+h2 {
+    font-size: 1.8em;
+}
+
+h3 {
+    font-size: 1.5em;
     margin-bottom: 20px;
+    border-bottom: 2px solid #eee; /* Subtle separator */
+    padding-bottom: 10px;
+}
+
+
+.form-group {
+    margin-bottom: 25px; /* Increased margin */
     text-align: left;
 }
 
@@ -46,6 +65,8 @@ label {
 }
 
 input[type="text"],
+input[type="email"], /* Added email type */
+input[type="password"],
 input[type="url"] {
     width: 100%;
     padding: 12px 15px;
@@ -53,14 +74,16 @@ input[type="url"] {
     border-radius: 6px;
     box-sizing: border-box;
     font-size: 1em;
-    transition: border-color 0.3s ease-in-out;
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 input[type="text"]:focus,
+input[type="email"]:focus, /* Added email type */
+input[type="password"]:focus,
 input[type="url"]:focus {
     border-color: #2575fc;
     outline: none;
-    box-shadow: 0 0 8px rgba(37, 117, 252, 0.3);
+    box-shadow: 0 0 8px rgba(37, 117, 252, 0.4); /* Stronger focus shadow */
 }
 
 button {
@@ -73,15 +96,18 @@ button {
     font-size: 1.1em;
     transition: background-color 0.3s ease-in-out, transform 0.1s ease-in-out;
     margin-top: 15px;
+    box-shadow: 0 4px 10px rgba(37, 117, 252, 0.3); /* Button shadow */
 }
 
 button:hover {
     background-color: #1a5bb5;
     transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(37, 117, 252, 0.4); /* Hover shadow */
 }
 
 button:active {
     transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(37, 117, 252, 0.3); /* Active shadow */
 }
 
 .success-message {
@@ -92,7 +118,8 @@ button:active {
     padding: 20px;
     margin-top: 20px;
     text-align: left;
-    word-break: break-all; /* Prevent long IDs/secrets from overflowing */
+    word-break: break-all;
+    box-shadow: 0 2px 8px rgba(212, 237, 218, 0.5); /* Success message shadow */
 }
 
 .success-message p {
@@ -106,20 +133,39 @@ button:active {
 
 .success-message code {
     background-color: #e9ecef;
-    padding: 3px 6px;
+    padding: 4px 8px; /* Slightly more padding */
     border-radius: 4px;
     font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
     color: #004085;
+    display: inline-block; /* Allows padding and margin */
+    margin-top: 5px;
 }
 
 .error {
     color: #dc3545;
-    margin-bottom: 15px;
+    margin-bottom: 20px; /* Increased margin */
     font-weight: bold;
+    background-color: #f8d7da; /* Light red background */
+    border: 1px solid #f5c6cb;
+    border-radius: 6px;
+    padding: 10px;
 }
 
 hr {
     margin: 30px 0;
     border: 0;
     border-top: 1px solid #eee;
+}
+
+/* Link styling for switching between login/register */
+.container p a {
+    color: #2575fc;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+.container p a:hover {
+    color: #1a5bb5;
+    text-decoration: underline;
 }

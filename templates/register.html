@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register to Authorize</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Authorize Application</h2>
+        <p>The application is requesting access to your account.</p>
+
+        <!-- Display error message if any -->
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <!-- Registration Form -->
+        <div class="form-container">
+            <h3>Register</h3>
+            <form action="/authorize" method="post">
+                <input type="hidden" name="client_id" value="{{ client_id }}">
+                <input type="hidden" name="redirect_uri" value="{{ redirect_uri }}">
+                <input type="hidden" name="scope" value="{{ scope }}">
+                <input type="hidden" name="state" value="{{ state }}">
+                <input type="hidden" name="action" value="register">
+                <label for="register_name">Name:</label>
+                <input type="text" id="register_name" name="name" required><br><br>
+                <label for="register_email">Email:</label>
+                <input type="email" id="register_email" name="email" required><br><br>
+                <label for="register_password">Password:</label>
+                <input type="password" id="register_password" name="password" required><br><br>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+
+        <p>Already have an account? <a href="/authorize?client_id={{ client_id }}&redirect_uri={{ redirect_uri }}{% if scope %}&scope={{ scope }}{% endif %}{% if state %}&state={{ state }}{% endif %}&view=login">Login here</a>.</p>
+
+    </div>
+</body>
+</html>

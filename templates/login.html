@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login to Authorize</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Authorize Application</h2>
+        <p>The application is requesting access to your account.</p>
+
+        <!-- Display error message if any -->
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <!-- Login Form -->
+        <div class="form-container">
+            <h3>Login</h3>
+            <form action="/authorize" method="post">
+                <input type="hidden" name="client_id" value="{{ client_id }}">
+                <input type="hidden" name="redirect_uri" value="{{ redirect_uri }}">
+                <input type="hidden" name="scope" value="{{ scope }}">
+                <input type="hidden" name="state" value="{{ state }}">
+                <input type="hidden" name="action" value="login">
+                <label for="login_email">Email:</label>
+                <input type="email" id="login_email" name="email" required><br><br>
+                <label for="login_password">Password:</label>
+                <input type="password" id="login_password" name="password" required><br><br>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+
+        <p>Don't have an account? <a href="/authorize?client_id={{ client_id }}&redirect_uri={{ redirect_uri }}{% if scope %}&scope={{ scope }}{% endif %}{% if state %}&state={{ state }}{% endif %}&view=register">Register here</a>.</p>
+
+    </div>
+</body>
+</html>
